@@ -1,0 +1,335 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2" [(ngModel)]="searchBarUserString">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" (click)="searchForUser()">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <!-- Display selected user details -->
+                    @if(searchUserMode==true && searchedUser && editMode==false && createMode==false){
+                        <div>
+                            <h1>User Details</h1>
+                            <p>ID: {{searchedUser._id}}</p>
+                            <p>Full Name: {{searchedUser.first_name}} {{searchedUser.middle_name}} {{searchedUser.last_name}}</p>
+                            <p>E-mail: {{searchedUser.email}}</p>
+                            <p>Phone Number: {{searchedUser.phone_number}}</p>
+                            <p>Gender: {{searchedUser.gender}}</p>
+                            <p>User Rating: {{searchedUser.user_rating}}</p>
+                            <p>Photo: {{searchedUser.photo}}</p>
+                            <p>Description: {{searchedUser.description}}</p>
+                            <p>DNI: {{searchedUser.dni}}</p>
+                            <p>Personality: {{searchedUser.personality}}</p>
+                            <p>Password: {{searchedUser.password}}</p>
+                            <p>Birthday: {{searchedUser.birth_date}}</p>
+                            <p>Adress: {{searchedUser.address}}</p>
+                            <p>Emergency Contact: {{searchedUser.emergency_contact?.full_name}}</p>
+                            <p>Emergency Contact Phone: {{searchedUser.emergency_contact?.telephone}}</p>
+                            @if(searchedUser.user_deactivated==true){
+                                <p>User Status: Deactivated</p>
+                            }@else{
+                                <p>User Status: Active</p>
+                            }
+                            <p>Creation Date: {{searchedUser.creation_date}}</p>
+                            <p>Last Modified: {{searchedUser.modified_date}}</p>
+                            <button class="btn btn-primary" type="button" (click)="backToUserList()">Back</button>
+                            <span style="margin-right: 10px;"></span>
+                            <button class="btn btn-primary" type="button" (click)="editUserMode()">Edit User</button>
+                            <span style="margin-right: 10px;"></span>
+                            <button class="btn btn-primary" type="button" (click)="deactivateUser()">Deactivate User</button>
+                        </div>
+                    }@else if (searchUserMode==true && searchedUser==null){
+                        <h1>User not found</h1>
+                        <button class="btn btn-primary" type="button" (click)="backToUserList()">Back</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <!-- Display list of users -->
+                    <div>
+                        @if(userSelected==false && createMode==false && searchUserMode==false && editMode==false){
+                            <h1>Users found:</h1>
+                            <ul style="list-style: none; padding: 0;"> 
+                            @for(user of users; track user._id)
+                            {
+                                <li style="padding:5px">
+                                    <button class="btn btn-primary" type="button" (click)="onSelectUser(user)">
+                                        <span class="name">{{user.first_name}} {{user.last_name}}</span>
+                                    </button>
+                                </li>
+                            }
+                            </ul>
+                            <button class="btn btn-secondary btn-sm" type="button" (click)="previousPage()">Previous Page</button>
+                            <span style="margin-right: 10px;"></span>
+                            <button class="btn btn-secondary btn-sm" type="button" (click)="nextPage()">Next Page</button>
+                            <div style="padding:10px" > 
+                                <button class="btn btn-primary" type="button" (click)="createUserBtn()">Create new user</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-auto">
+                    <!-- Display selected user details -->
+                    @if(selectedUser && searchUserMode==false && createMode==false  && editMode==false){
+                        <div>
+                            <h1>User Details</h1>
+                            <p>ID: {{selectedUser._id}}</p>
+                            <p>Full Name: {{selectedUser.first_name}} {{selectedUser.middle_name}} {{selectedUser.last_name}}</p>
+                            <p>E-mail: {{selectedUser.email}}</p>
+                            <p>Phone Number: {{selectedUser.phone_number}}</p>
+                            <p>Gender: {{selectedUser.gender}}</p>
+                            <p>User Rating: {{selectedUser.user_rating}}</p>
+                            <p>Photo: {{selectedUser.photo}}</p>
+                            <p>Description: {{selectedUser.description}}</p>
+                            <p>DNI: {{selectedUser.dni}}</p>
+                            <p>Personality: {{selectedUser.personality}}</p>
+                            <p>Password: {{selectedUser.password}}</p>
+                            <p>Birthday: {{selectedUser.birth_date}}</p>
+                            <p>Adress: {{selectedUser.address}}</p>
+                            <p>Emergency Contact: {{selectedUser.emergency_contact?.full_name}}</p>
+                            <p>Emergency Contact Phone: {{selectedUser.emergency_contact?.telephone}}</p>
+                            @if(selectedUser.user_deactivated==true){
+                                <p>User Status: Deactivated</p>
+                            }@else{
+                                <p>User Status: Active</p>
+                            }
+                            <p>Creation Date: {{selectedUser.creation_date}}</p>
+                            <p>Last Modified: {{selectedUser.modified_date}}</p>
+                            <button class="btn btn-primary" type="button" (click)="backToUserList()">Back</button>
+                            <span style="margin-right: 10px;"></span>
+                            <button class="btn btn-primary" type="button" (click)="editUserMode()">Edit User</button>
+                            <span style="margin-right: 10px;"></span>
+                            <button class="btn btn-primary" type="button" (click)="deactivateUser()">Deactivate User</button>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-auto">
+                    <!-- Create a user -->
+                    @if(createMode==true){
+                        <div>
+                            <h1>Enter new user details:</h1>
+                            <form [formGroup]="userForm">
+                                <div>
+                                <label for="first_name" style="padding:10px">First Name:</label>
+                                <input id="first_name" type="text" formControlName="first_name" required>
+                                </div>
+
+                                <div>
+                                <label for="middle_name" style="padding:10px">Middle Name:</label>
+                                <input id="middle_name" type="text" formControlName="middle_name">
+                                </div>
+
+                                <div>
+                                <label for="last_name" style="padding:10px">Last Name:</label>
+                                <input id="last_name" type="text" formControlName="last_name" required>
+                                </div>
+
+                                <div>
+                                <label for="email" style="padding:10px">E-mail:</label>
+                                <input id="email" type="text" formControlName="email" required>
+                                </div>
+
+                                <div>
+                                <label for="phone_number" style="padding:10px">Phone Number:</label>
+                                <input id="phone_number" type="text" formControlName="phone_number" required>
+                                </div>
+    
+                                <div>
+                                <label for="gender" style="padding:10px">Gender:</label>
+                                <select id="gender" formControlName="gender" class="form-control" required>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                </div>
+
+                                <div>
+                                <label for="user_rating" style="padding:10px">User Rating:</label>
+                                <input id="user_rating" type="number" formControlName="user_rating" class="form-control" min="0" max="5" step="0.1" >
+                                </div>
+
+                                <div>
+                                <label for="photo" style="padding:10px">Photo:</label>
+                                <input id="photo" type="text" formControlName="photo">
+                                </div>
+
+                                <div>
+                                <label for="description" style="padding:10px">Description:</label>
+                                <input id="description" type="text" formControlName="description">
+                                </div>
+
+                                <div>
+                                <label for="dni" style="padding:10px">DNI:</label>
+                                <input id="dni" type="text" formControlName="dni">
+                                </div>
+
+                                <div>
+                                <label for="personality" style="padding:10px">Personality:</label>
+                                <input id="personality" type="text" formControlName="personality">
+                                </div>
+
+                                <div>
+                                <label for="password" style="padding:10px">Password:</label>
+                                <input id="password" type="text" formControlName="password" required>
+                                </div>
+
+                                <div>
+                                <label for="birth_date" style="padding:10px">Birthday:</label>
+                                <input id="birth_date" type="date" formControlName="birth_date" required>
+                                </div>
+
+                                <div>
+                                <label for="address" style="padding:10px">Address:</label>
+                                <input id="address" type="text" formControlName="address">
+                                </div>
+
+                                <div>
+                                    <label for="emergency_contact" style="padding:10px">Emergency Contact:</label>
+                                    <!-- Use formGroupName to access the emergency_contact FormGroup -->
+                                    <div formGroupName="emergency_contact">
+                                        <!-- Access the full_name control -->
+                                        <div>
+                                            <label for="emergency_full_name">Full Name:</label>
+                                            <input id="emergency_full_name" type="text" formControlName="full_name" class="form-control">
+                                        </div>
+                                        <!-- Access the telephone control -->
+                                        <div>
+                                            <label for="emergency_telephone">Telephone:</label>
+                                            <input id="emergency_telephone" type="text" formControlName="telephone" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                                <div style="padding:10px">
+                                    <button class="btn btn-primary" [disabled]="!userForm.valid" type="submit" (click)="onSubmit()">Submit</button>
+                                </div>
+                                
+                            </form>
+                            <button class="btn btn-primary" type="button" (click)="backToUserList()">Back</button>
+                            
+                        </div>
+                    }@else if(editMode==true){
+                        <div>
+                            <h1>Edit user details:</h1>
+                            <form [formGroup]="userForm">
+                                <div>
+                                <label for="first_name" style="padding:10px">First Name:</label>
+                                <input id="first_name" type="text" formControlName="first_name" required>
+                                </div>
+
+                                <div>
+                                <label for="middle_name" style="padding:10px">Middle Name:</label>
+                                <input id="middle_name" type="text" formControlName="middle_name">
+                                </div>
+
+                                <div>
+                                <label for="last_name" style="padding:10px">Last Name:</label>
+                                <input id="last_name" type="text" formControlName="last_name" required>
+                                </div>
+
+                                <div>
+                                <label for="email" style="padding:10px">E-mail:</label>
+                                <input id="email" type="text" formControlName="email" required>
+                                </div>
+
+                                <div>
+                                <label for="phone_number" style="padding:10px">Phone Number:</label>
+                                <input id="phone_number" type="text" formControlName="phone_number" required>
+                                </div>
+    
+                                <div>
+                                <label for="gender" style="padding:10px">Gender:</label>
+                                <select id="gender" formControlName="gender" class="form-control" required>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                </div>
+
+                                <div>
+                                <label for="user_rating" style="padding:10px">User Rating:</label>
+                                <input id="user_rating" type="number" formControlName="user_rating" class="form-control" min="0" max="5" step="0.1" >
+                                </div>
+
+                                <div>
+                                <label for="photo" style="padding:10px">Photo:</label>
+                                <input id="photo" type="text" formControlName="photo">
+                                </div>
+
+                                <div>
+                                <label for="description" style="padding:10px">Description:</label>
+                                <input id="description" type="text" formControlName="description">
+                                </div>
+
+                                <div>
+                                <label for="dni" style="padding:10px">DNI:</label>
+                                <input id="dni" type="text" formControlName="dni">
+                                </div>
+
+                                <div>
+                                <label for="personality" style="padding:10px">Personality:</label>
+                                <input id="personality" type="text" formControlName="personality">
+                                </div>
+
+                                <div>
+                                <label for="password" style="padding:10px">Password:</label>
+                                <input id="password" type="text" formControlName="password" required>
+                                </div>
+
+                                <div>
+                                <label for="birth_date" style="padding:10px">Birthday:</label>
+                                <input id="birth_date" type="date" formControlName="birth_date" required>
+                                </div>
+
+                                <div>
+                                <label for="address" style="padding:10px">Address:</label>
+                                <input id="address" type="text" formControlName="address">
+                                </div>
+
+                                <div>
+                                    <label for="emergency_contact" style="padding:10px">Emergency Contact:</label>
+                                    <!-- Use formGroupName to access the emergency_contact FormGroup -->
+                                    <div formGroupName="emergency_contact">
+                                        <!-- Access the full_name control -->
+                                        <div>
+                                            <label for="emergency_full_name">Full Name:</label>
+                                            <input id="emergency_full_name" type="text" formControlName="full_name" class="form-control">
+                                        </div>
+                                        <!-- Access the telephone control -->
+                                        <div>
+                                            <label for="emergency_telephone">Telephone:</label>
+                                            <input id="emergency_telephone" type="text" formControlName="telephone" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="padding:10px">
+                                    <button class="btn btn-primary" type="submit" (click)="editUserSubmit()">Submit</button>
+                                </div>
+                                
+                            </form>
+                            <button class="btn btn-primary" type="button" (click)="backToUserList()">Back</button>
+                            
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

@@ -1,0 +1,14 @@
+.content-wrapper {
+    background-color: #343a40; /* Dark background color */
+    min-height: 100vh; /* Ensure the content wrapper takes up the full height of the viewport */
+    color: white; /* Set text color to white */
+  }
+  
+  .form-control {
+    background-color: #495057; /* Match the background color of the input fields */
+    color: white; /* Set text color to white */
+  }
+  .form-control::placeholder {
+    color: #e2dede; /* Change the placeholder color */
+  }
+  

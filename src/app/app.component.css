@@ -1,0 +1,5 @@
+.content-wrapper {
+  background-color: #343a40; /* Dark background color */
+  min-height: 100vh; /* Ensure the content wrapper takes up the full height of the viewport */
+  color: white; /* Set text color to white */
+}

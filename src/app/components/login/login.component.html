@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 mt-5">
+        @if(loggedIn==false){
+            <h1>Login</h1>
+            <form [formGroup]="loginForm">
+                <div>
+                    <label for="Email" style="padding:10px">Email:</label>
+                    <input id="Email" type="text" formControlName="email" required>
+                    @if(loginForm.controls.email.invalid && loginForm.controls.email.touched){
+                        <small class="text-danger">Please enter a valid email.</small>
+                    }
+                </div>
+
+                    <div>
+                    <label for="password" style="padding:10px">password:</label>
+                    <input id="password" type="text" formControlName="password">
+                    </div>
+                <button [disabled]="!loginForm.valid" type="submit" button class="btn btn-primary"  (click)="login()">Login</button>
+            </form>
+        }@else{
+        <div class="card-header">
+          <h1>You are logged in</h1> 
+          <p>Use the navigation menu to manage users, places, reviews, housing or conversations</p>
+        </div>
+        <button type="submit" button class="btn btn-primary" (click)="logout()">Logout</button>
+        }
+    </div>
+  </div>
+  
